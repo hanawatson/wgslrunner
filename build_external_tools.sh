@@ -36,3 +36,12 @@ cd build
 cmake -DSPIRV_SKIP_TESTS=ON \
 -DSPIRV-Headers_SOURCE_DIR="${DAWN_SRC_ABSDIR}/third_party/vulkan-deps/spirv-headers/src" ..
 make spirv-val
+
+# builds a standalone version of glslang from existing source files
+cd "${DAWN_SRC_ABSDIR}/third_party/vulkan-deps/glslang/src"
+if [ ! -d build ]; then
+  mkdir build
+fi
+cd build
+cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$(pwd)/install" ..
+make -j4 install

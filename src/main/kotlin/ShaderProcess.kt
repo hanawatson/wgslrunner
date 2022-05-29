@@ -9,6 +9,7 @@ internal class ShaderProcess(
     inputBindings: String = "",
     inputShader: String = "",
     outputLang: String = "",
+    inputGLSL: String = "",
     inputSpirv: String = "",
     glslProfile: String = "",
 ) {
@@ -53,6 +54,10 @@ internal class ShaderProcess(
                 "naga" -> listOf("cargo", "run", inputShader)
                 else   -> throw Exception("Unrecognised input validation tool $tool requested!")
             }
+        } else if (inputGLSL != "") {
+            // glslang validation
+            name = "$tool-output-$outputLang-$glslProfile-validate-glslang"
+            command = listOf("./glslangValidator", inputGLSL)
         } else if (inputSpirv != "") {
             // spirv-val validation
             name = "$tool-output-$outputLang-validate-spirv-val"
@@ -79,7 +84,7 @@ internal class ShaderProcess(
         val processError: String
         val processCode: Int
 
-        val processNameWide = String.format("%-40s", name)
+        val processNameWide = String.format("%-50s", name)
 
         print(processNameWide)
 
@@ -93,7 +98,10 @@ internal class ShaderProcess(
             val process = ProcessBuilder(command).directory(dir).start()
             processOK = process.inputStream.reader().use { it.readText() }
             processError = process.errorStream.reader().use { it.readText() }
-            process.waitFor(60, TimeUnit.SECONDS)
+            val processTerminated = process.waitFor(60, TimeUnit.SECONDS)
+            if (!processTerminated) {
+                process.destroy()
+            }
             processCode = process.exitValue()
         } catch (e: Exception) {
             System.err.println(
@@ -106,7 +114,7 @@ internal class ShaderProcess(
         val processStatusBase = if (processCode == 0) "OK!" else "Error"
         val processStatus = "[[ $processStatusBase ]]"
 
-        val processOutputBase = if (processCode == 0) processOK else processError
+        val processOutputBase = if (processCode == 0 || name.contains("glslang")) processOK else processError
         val processOutput = "$name output:\n\n\t${(processOutputBase).replace("\n", "\n\t")}"
 
         println(processStatus)

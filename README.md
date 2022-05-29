@@ -2,7 +2,12 @@
 
 This tool combines the [wgslgenerator](https://github.com/hanawatson/wgslgenerator)
 WGSL code generator with the testing harness from the
-[wgslsmith](https://github.com/wgslsmith/wgslsmith) project by [hasali19](https://github.com/hasali19), as well as external validation tools like [spirv-val](https://github.com/KhronosGroup/SPIRV-Tools). It is used to test the [Dawn](https://dawn.googlesource.com/dawn/) and [wgpu](https://github.com/gfx-rs/wgpu) WebGPU APIs, as well as their respective WGSL compilers [Tint](https://dawn.googlesource.com/tint) and [naga](https://github.com/gfx-rs/naga).
+[wgslsmith](https://github.com/wgslsmith/wgslsmith) project by [hasali19](https://github.com/hasali19), as well as
+external validation tools like [spirv-val](https://github.com/KhronosGroup/SPIRV-Tools)
+and [glslang](https://github.com/KhronosGroup/glslang). It is used to
+test
+the [Dawn](https://dawn.googlesource.com/dawn/) and [wgpu](https://github.com/gfx-rs/wgpu) WebGPU APIs, and their
+respective WGSL compilers [Tint](https://dawn.googlesource.com/tint) and [naga](https://github.com/gfx-rs/naga).
 
 ## Prerequisites
 
@@ -22,10 +27,18 @@ usage of Ninja and the [dawn-build](https://github.com/wgslsmith/dawn-build) scr
 
 wgslgenerator, hasali19's wgslsmith and dawn-build should be located in the top level of the wgslsmith directory.
 If any repository has already been cloned somewhere else, the `$WGSLGENERATOR_PATH`,
-`$WGSLSMITH_HARNESS_PATH` and `$DAWN_BUILD_SRC` (pointing to the dawn submodule within dawn-build) environment variables should be set accordingly. If these variables are empty or unset, the
+`$WGSLSMITH_HARNESS_PATH` and `$DAWN_BUILD_SRC` (pointing to the dawn submodule within dawn-build) environment variables
+should be set accordingly. If these variables are empty or unset, the
 default locations will be assumed.
 
-In addition, wgslsmith makes use of the Tint compiler and spirv-val (a tool included in the [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools) project) as standalone executables. These can be downloaded and built from source manually, in which case the `$TINT_PATH` and `$SPIRV_VAL_PATH` environment variables should be set, or can be assembled from existing files in the Dawn source code by using the `build_external_tools.sh` script included in wgslsmith. Use of this script is recommended to save space on the user's machine, as Tint in particular is a large repository.
+In addition, wgslsmith makes use of the Tint compiler, spirv-val (a tool included in the
+[SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools) project)
+and [glslang](https://github.com/KhronosGroup/glslang) as standalone executables.
+These can be downloaded and built from source manually, in which case the `$TINT_PATH`, `$SPIRV_VAL_PATH` and
+`$GLSLANG_PATH` environment variables should be set, or can be assembled from existing files in the Dawn source
+code by using the `build_external_tools.sh` script included in wgslsmith. Use of this script is recommended to save
+space on the
+user's machine, as Tint in particular is a large repository.
 
 ## Usage instructions
 
@@ -52,6 +65,7 @@ The following environment variables are also used by wgslsmith, and should be se
 | `$WGSLSMITH_HARNESS_PATH` | `wgslsmith` |
 | `$TINT_DIR` | `external_tools/tint` |
 | `$SPIRV_VAL_DIR` | `$DAWN_SRC_DIR/third_party/vulkan-deps/spirv-tools/src/build/tools` |
+|`$GLSLANG_DIR` | `$DAWN_SRC_DIR/third_party/vulkan-deps/glslang/src/build/install/bin` |
 
 ## Requirements
 

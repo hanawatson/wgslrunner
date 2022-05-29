@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     var inputBindings: File? = null
     var inputConfig: File? = null
 
-    val mandatoryArguments = 8
+    val mandatoryArguments = 9
     for (arg in args.drop(mandatoryArguments)) {
         when {
             arg.startsWith("shad:") -> {
@@ -35,10 +35,11 @@ fun main(args: Array<String>) {
     val harnessDir = File("${args[1]}/harness/target/release").absoluteFile
     val tintDir = File(args[2]).absoluteFile
     val spirvValDir = File(args[3]).absoluteFile
-    val logOnError = args[4] == "1"
-    val logOnOK = args[5] == "1"
-    val printErrorDetail = args[6] == "1"
-    val terminateAfterError = args[7] == "1"
+    val glslangDir = File(args[4]).absoluteFile
+    val logOnError = args[5] == "1"
+    val logOnOK = args[6] == "1"
+    val printErrorDetail = args[7] == "1"
+    val terminateAfterError = args[8] == "1"
 
     val (shader, bindings) = if (inputShader != null) {
         try {
@@ -167,11 +168,23 @@ fun main(args: Array<String>) {
                         )
                     )
                     processesToRun.add(ShaderProcess("naga", nagaDir, outputLang = lang, glslProfile = profile))
+                    val inputGLSL = "$nagaDir/${tempOutputs[lang]}"
+                    processesToRun.add(
+                        ShaderProcess(
+                            "naga", glslangDir, outputLang = lang, inputGLSL = inputGLSL, glslProfile = profile
+                        )
+                    )
                 }
                 for (profile in glslOutputProfiles) {
                     processesToRun.add(
                         ShaderProcess(
                             "naga", nagaDir, inputShader = tempNagaShader.path, outputLang = lang, glslProfile = profile
+                        )
+                    )
+                    val inputGLSL = "$nagaDir/${tempOutputs[lang]}"
+                    processesToRun.add(
+                        ShaderProcess(
+                            "naga", glslangDir, outputLang = lang, inputGLSL = inputGLSL, glslProfile = profile
                         )
                     )
                 }
@@ -185,6 +198,7 @@ fun main(args: Array<String>) {
             if (lang == "spirv") {
                 val inputSpirv = "$nagaDir/${tempOutputs[lang]}"
                 processesToRun.add(ShaderProcess("naga", spirvValDir, outputLang = lang, inputSpirv = inputSpirv))
+            } else if (lang == "glsl" || lang == "glsl-comp") {
             }
         }
         for (lang in nagaOutputLangs) {

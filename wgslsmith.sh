@@ -50,6 +50,14 @@ if [ "${SPIRV_VAL_DIR}" ]; then
 else
   SPIRV_VAL_DIR="${DAWN_SRC_DIR}/third_party/vulkan-deps/spirv-tools/src/build/tools"
 fi
+if [ "${GLSLANG_DIR}" ]; then
+  if [ ! -d "${GLSLANG_DIR}" ]; then
+    echo "Error: env path to glslang GLSLANG_DIR is not a valid directory."
+    exit 1
+  fi
+else
+  GLSLANG_DIR="${DAWN_SRC_DIR}/third_party/vulkan-deps/glslang/src/build/install/bin"
+fi
 
 while [ $# -gt 0 ]; do
   case "${1}" in
@@ -165,6 +173,6 @@ if [ ! -d "${WGSLSMITH_HARNESS_NAGA_PATH}" ]; then
   exit 1
 fi
 
-./gradlew run --args="${WGSLGENERATOR_PATH} ${WGSLSMITH_HARNESS_PATH} ${TINT_DIR} ${SPIRV_VAL_DIR} \
+./gradlew run --args="${WGSLGENERATOR_PATH} ${WGSLSMITH_HARNESS_PATH} ${TINT_DIR} ${SPIRV_VAL_DIR} ${GLSLANG_DIR} \
 ${LOG_ON_ERROR} ${LOG_ON_OK} ${PRINT_ERROR_DETAIL} ${TERMINATE_AFTER_ERROR} \
 shad:${INPUT_SHADER_FILE} bind:${INPUT_BINDINGS_FILE} conf:${INPUT_CONFIG_FILE}" -quiet
