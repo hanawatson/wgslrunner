@@ -1,10 +1,10 @@
 # wgslsmith
 
-## Prerequisites
-
 This tool combines the [wgslgenerator](https://github.com/hanawatson/wgslgenerator)
 WGSL code generator with the testing harness from the
 [wgslsmith](https://github.com/wgslsmith/wgslsmith) project by [hasali19](https://github.com/hasali19), as well as external validation tools like [spirv-val](https://github.com/KhronosGroup/SPIRV-Tools). It is used to test the [Dawn](https://dawn.googlesource.com/dawn/) and [wgpu](https://github.com/gfx-rs/wgpu) WebGPU APIs, as well as their respective WGSL compilers [Tint](https://dawn.googlesource.com/tint) and [naga](https://github.com/gfx-rs/naga).
+
+## Prerequisites
 
 wgslsmith and wgslgenerator can be cloned using:
 
