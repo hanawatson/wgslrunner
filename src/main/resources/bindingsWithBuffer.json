@@ -1,0 +1,11 @@
+{
+  "resources": [
+    {
+      "kind": "StorageBuffer",
+      "group": 0,
+      "binding": 0,
+      "size": 4,
+      "init": null
+    }
+  ]
+}
