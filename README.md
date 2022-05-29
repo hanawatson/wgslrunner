@@ -33,9 +33,9 @@ wgslsmith can be used by running its associated shell script, `wgslsmith.sh`. Se
 
 | Flag | Meaning | Default value |
 | ---- | ------- | ------------- |
-| `-s`, `--input-shader <argument>` | The path of the WGSL shader that should be inputted into the various tools tested by wgslsmith | None - if unspecified, wgslgenerator will be used to generate a random shader |
-| `-b`, `--input-bindings <argument>` | The path of the bindings JSON file that should be provided to the harness (more details about which can be found in hasali19's wgslsmith documentation) | None - if unspecified, default bindings compatible with wgslgenerator's output will be used |
-| `-c`, `--input-config <argument>` | The path of the configuration JSON file that should be provided to wgslgenerator during shader generation (more details about which can be found in wgslgenerator documentation) | None - if unspecified, wgslgenerator will use its default configuration |
+| `-s <argument>`, `--input-shader <argument>` | The path of the WGSL shader that should be inputted into the various tools tested by wgslsmith | None - if unspecified, wgslgenerator will be used to generate a random shader |
+| `-b <argument>`, `--input-bindings <argument>` | The path of the bindings JSON file that should be provided to the harness (more details about which can be found in hasali19's wgslsmith documentation) | None - if unspecified, default bindings compatible with wgslgenerator's output will be used |
+| `-c <argument>`, `--input-config <argument>` | The path of the configuration JSON file that should be provided to wgslgenerator during shader generation (more details about which can be found in wgslgenerator documentation) | None - if unspecified, wgslgenerator will use its default configuration |
 | `-(e/E)`, `--(enable/disable)-log-on-error` | Enable/disable logging of the relevant shader, bindings and output of wgslsmith if any of its tests fail | Enabled |
 | `-(o/O)`, `--(enable/disable)-log-on-ok` | Enable/disable logging of the relevant shader, bindings and output of wgslsmith even if all tests succeed | Disabled |
 | `-(p/P)`, `--(enable/disable)-print-error-detail` | Enable/disable printing error output to the console if any tests fail | Disabled |
