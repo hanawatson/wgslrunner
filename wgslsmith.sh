@@ -16,7 +16,7 @@ if [ "${WGSLGENERATOR_PATH}" ]; then
     exit 1
   fi
 else
-  WGSLGENERATOR_PATH="./wgslgenerator"
+  WGSLGENERATOR_PATH="wgslgenerator"
 fi
 if [ "${DAWN_SRC_DIR}" ]; then
   if [ ! -d "${DAWN_SRC_DIR}" ]; then
@@ -24,7 +24,7 @@ if [ "${DAWN_SRC_DIR}" ]; then
     exit 1
   fi
 else
-  DAWN_SRC_DIR="./dawn-build/dawn"
+  DAWN_SRC_DIR="dawn-build/dawn"
 fi
 if [ "${WGSLSMITH_HARNESS_PATH}" ]; then
   if [ ! -d "${WGSLSMITH_HARNESS_PATH}" ]; then
@@ -32,15 +32,27 @@ if [ "${WGSLSMITH_HARNESS_PATH}" ]; then
     exit 1
   fi
 else
-  WGSLSMITH_HARNESS_PATH="./wgslsmith"
+  WGSLSMITH_HARNESS_PATH="wgslsmith"
+fi
+if [ "${TINT_DIR}" ]; then
+  if [ ! -d "${TINT_DIR}" ]; then
+    echo "Error: env path to Tint TINT_DIR is not a valid directory."
+    exit 1
+  fi
+else
+  TINT_DIR="external_tools/tint"
+fi
+if [ "${SPIRV_VAL_DIR}" ]; then
+  if [ ! -d "${SPIRV_VAL_DIR}" ]; then
+    echo "Error: env path to spirv-val SPIRV_VAL_DIR is not a valid directory."
+    exit 1
+  fi
+else
+  SPIRV_VAL_DIR="${DAWN_SRC_DIR}/third_party/vulkan-deps/spirv-tools/src/build/tools"
 fi
 
 while [ $# -gt 0 ]; do
   case "${1}" in
-    -h|--help)
-    echo "help message"
-    exit 0
-    ;;
     -s|--input-shader)
     if [ ! "${2}" ]; then
       echo "Error: no input shader file was provided."
@@ -153,6 +165,6 @@ if [ ! -d "${WGSLSMITH_HARNESS_NAGA_PATH}" ]; then
   exit 1
 fi
 
-./gradlew run --args="${WGSLGENERATOR_PATH} ${DAWN_SRC_DIR} ${WGSLSMITH_HARNESS_PATH} ${LOG_ON_ERROR} ${LOG_ON_OK} \
-${PRINT_ERROR_DETAIL} ${TERMINATE_AFTER_ERROR} shad:${INPUT_SHADER_FILE} bind:${INPUT_BINDINGS_FILE} \
-conf:${INPUT_CONFIG_FILE}" -quiet
+./gradlew run --args="${WGSLGENERATOR_PATH} ${WGSLSMITH_HARNESS_PATH} ${TINT_DIR} ${SPIRV_VAL_DIR} \
+${LOG_ON_ERROR} ${LOG_ON_OK} ${PRINT_ERROR_DETAIL} ${TERMINATE_AFTER_ERROR} \
+shad:${INPUT_SHADER_FILE} bind:${INPUT_BINDINGS_FILE} conf:${INPUT_CONFIG_FILE}" -quiet

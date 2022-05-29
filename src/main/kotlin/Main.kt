@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     var inputBindings: File? = null
     var inputConfig: File? = null
 
-    val mandatoryArguments = 6
+    val mandatoryArguments = 8
     for (arg in args.drop(mandatoryArguments)) {
         when {
             arg.startsWith("shad:") -> {
@@ -31,15 +31,14 @@ fun main(args: Array<String>) {
     }
 
     val generatorDir = File(args[0]).absoluteFile
-    val spirvValDir = File("${args[1]}/third_party/vulkan-deps/spirv-tools/src/build/tools").absoluteFile
-    val nagaDir = File("${args[2]}/harness/external/naga").absoluteFile
-    val harnessDir = File("${args[2]}/harness/target/release").absoluteFile
-    val logOnError = args[3] == "1"
-    val logOnOK = args[4] == "1"
-    val printErrorDetail = args[5] == "1"
-    val terminateAfterError = args[6] == "1"
-
-    val tintDir = File("external_tools/tint").absoluteFile
+    val nagaDir = File("${args[1]}/harness/external/naga").absoluteFile
+    val harnessDir = File("${args[1]}/harness/target/release").absoluteFile
+    val tintDir = File(args[2]).absoluteFile
+    val spirvValDir = File(args[3]).absoluteFile
+    val logOnError = args[4] == "1"
+    val logOnOK = args[5] == "1"
+    val printErrorDetail = args[6] == "1"
+    val terminateAfterError = args[7] == "1"
 
     val (shader, bindings) = if (inputShader != null) {
         try {
