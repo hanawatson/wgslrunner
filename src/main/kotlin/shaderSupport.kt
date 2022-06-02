@@ -1,4 +1,4 @@
-package wgslsmith
+package wgslsmith.wgslrunner
 
 internal val tempOutputs = mapOf(
     Pair("dot", "temp_output.dot"),

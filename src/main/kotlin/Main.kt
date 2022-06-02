@@ -1,4 +1,4 @@
-package wgslsmith
+package wgslsmith.wgslrunner
 
 import java.io.File
 import java.nio.charset.Charset

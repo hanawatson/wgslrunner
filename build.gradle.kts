@@ -5,7 +5,7 @@ plugins {
     application
 }
 
-group = "org.wgslsmith"
+group = "org.wgslsmith.wgslrunner"
 
 repositories {
     mavenCentral()
@@ -13,7 +13,7 @@ repositories {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"]
+        attributes(mapOf("Main-Class" to application.mainClass))
     }
     configurations["compileClasspath"].forEach { file: File ->
         from(zipTree(file.absoluteFile))
@@ -26,5 +26,5 @@ tasks.withType<KotlinCompile> {
 }
 
 application {
-    mainClass.set("wgslsmith.MainKt")
+    mainClass.set("wgslsmith.wgslrunner.MainKt")
 }

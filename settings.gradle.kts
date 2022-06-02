@@ -1,3 +1,1 @@
-
-rootProject.name = "wgslsmith"
-
+rootProject.name = "wgslrunner"
