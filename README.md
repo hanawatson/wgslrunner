@@ -53,6 +53,7 @@ wgslrunner can be used by running its associated shell script, `wgslrun.sh`. Sev
 | `-(o/O)`, `--(enable/disable)-log-on-ok` | Enable/disable logging of the relevant shader, bindings and output of wgslrunner even if all tests succeed | Disabled |
 | `-(p/P)`, `--(enable/disable)-print-error-detail` | Enable/disable printing error output to the console if any tests fail | Disabled |
 | `-(t/T)`, `--(enable/disable)-terminate-after-error` | Enable/disable termination if any tests fail, rather than carrying on with remaining tests | Enabled |
+| `-j`, `--use-generator-jar` | Enables usage of the standalone `wgslgenerator.jar` jar (see the [relevant wgslgenerator README section](https://github.com/hanawatson/wgslgenerator#standalone-jar)) | Disabled |
 
 Note: both `input-shader` and `input-bindings` must be provided, or neither.
 
