@@ -9,6 +9,7 @@ LOG_ON_ERROR=1
 LOG_ON_OK=0
 PRINT_ERROR_DETAIL=0
 TERMINATE_AFTER_ERROR=1
+USE_GEN_JAR=0
 
 if [ "${WGSLGENERATOR_PATH}" ]; then
   if [ ! -d "${WGSLGENERATOR_PATH}" ]; then
@@ -147,6 +148,10 @@ while [ $# -gt 0 ]; do
     TERMINATE_AFTER_ERROR=0
     shift
     ;;
+    -j|--use-generator-jar)
+    USE_GEN_JAR=1
+    shift
+    ;;
     *)
     echo "Error: unrecognised argument provided."
     exit 1
@@ -174,5 +179,5 @@ if [ ! -d "${WGSLSMITH_HARNESS_NAGA_PATH}" ]; then
 fi
 
 ./gradlew run --args="${WGSLGENERATOR_PATH} ${WGSLSMITH_HARNESS_PATH} ${TINT_DIR} ${SPIRV_VAL_DIR} ${GLSLANG_DIR} \
-${LOG_ON_ERROR} ${LOG_ON_OK} ${PRINT_ERROR_DETAIL} ${TERMINATE_AFTER_ERROR} \
+${LOG_ON_ERROR} ${LOG_ON_OK} ${PRINT_ERROR_DETAIL} ${TERMINATE_AFTER_ERROR} ${USE_GEN_JAR} \
 shad:${INPUT_SHADER_FILE} bind:${INPUT_BINDINGS_FILE} conf:${INPUT_CONFIG_FILE}" -quiet

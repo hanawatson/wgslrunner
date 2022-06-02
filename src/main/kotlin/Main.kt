@@ -9,7 +9,7 @@ fun main(args: Array<String>) {
     var inputBindings: File? = null
     var inputConfig: File? = null
 
-    val mandatoryArguments = 9
+    val mandatoryArguments = 10
     for (arg in args.drop(mandatoryArguments)) {
         when {
             arg.startsWith("shad:") -> {
@@ -40,6 +40,7 @@ fun main(args: Array<String>) {
     val logOnOK = args[6] == "1"
     val printErrorDetail = args[7] == "1"
     val terminateAfterError = args[8] == "1"
+    val useGenJar = args[9] == "1"
 
     val (shader, bindings) = if (inputShader != null) {
         try {
@@ -52,11 +53,10 @@ fun main(args: Array<String>) {
             return
         }
     } else {
-        val genCommand = if (inputConfig != null) {
-            listOf("./wgslgen.sh", "-c", inputConfig.absolutePath)
-        } else {
-            listOf("./wgslgen.sh")
-        }
+        val genCommand = arrayListOf("./wgslgen.sh")
+        if (inputConfig != null) genCommand.addAll(listOf("-c", inputConfig.absolutePath))
+        if (useGenJar) genCommand.add("--use-jar")
+        
         val genProcess = ProcessBuilder(genCommand).directory(generatorDir).start()
         val genShader = genProcess.inputStream.reader(Charset.defaultCharset()).use { it.readText() }
         val genShaderError = genProcess.errorStream.reader(Charset.defaultCharset()).use { it.readText() }
