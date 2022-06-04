@@ -34,9 +34,6 @@ gradle-app.setting
 .gradletasknamecache
 
 ### External tools and generated files ###
-dawn-build/
 depot_tools/
 external_tools/
 output_logs/
-wgslgenerator/
-wgslsmith/

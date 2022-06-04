@@ -1,44 +1,41 @@
 set -e
 
-WGSLSMITH_ABSDIR="$(pwd)"
-DAWN_SRC_ABSDIR=
+WGSLRUNNER_DIR="$(pwd)"
 
 if [ ! -d external_tools ]; then
   mkdir external_tools
 fi
 
-if [ "${DAWN_SRC_DIR}" ]; then
- if [ ! -d "${DAWN_SRC_DIR}" ]; then
-   echo "Error: env path to dawn DAWN_SRC_DIR is not a valid directory."
-   exit 1
- fi
-else
- DAWN_SRC_DIR="./dawn-build/dawn"
-fi
-cd "${DAWN_SRC_DIR}"
-DAWN_SRC_ABSDIR="$(pwd)"
+# builds Dawn using the wgslsmith build script
+cd wgslsmith
+./build.py dawn
+DAWN_DIR="${WGSLRUNNER_DIR}/wgslsmith/external/dawn"
 
-# builds a standalone version of Tint from existing source files
-cd "${WGSLSMITH_ABSDIR}/external_tools"
+# builds the wgslsmith harness using the wgslsmith build script
+cd harness
+cargo build --release
+
+# builds a standalone version of Tint from existing Dawn files
+cd "${WGSLRUNNER_DIR}/external_tools"
 if [ ! -d tint ]; then
   mkdir tint
 fi
 cd tint
-cmake "${DAWN_SRC_ABSDIR}"
+cmake "${DAWN_DIR}"
 make tint
 
-# builds a standalone version of SPIRV-Tools from existing source files
-cd "${DAWN_SRC_ABSDIR}/third_party/vulkan-deps/spirv-tools/src"
+# builds a standalone version of SPIRV-Tools from existing Dawn files
+cd "${DAWN_DIR}/third_party/vulkan-deps/spirv-tools/src"
 if [ ! -d build ]; then
   mkdir build
 fi
 cd build
 cmake -DSPIRV_SKIP_TESTS=ON \
--DSPIRV-Headers_SOURCE_DIR="${DAWN_SRC_ABSDIR}/third_party/vulkan-deps/spirv-headers/src" ..
+-DSPIRV-Headers_SOURCE_DIR="${DAWN_DIR}/third_party/vulkan-deps/spirv-headers/src" ..
 make spirv-val
 
-# builds a standalone version of glslang from existing source files
-cd "${DAWN_SRC_ABSDIR}/third_party/vulkan-deps/glslang/src"
+# builds a standalone version of glslang from existing Dawn files
+cd "${DAWN_DIR}/third_party/vulkan-deps/glslang/src"
 if [ ! -d build ]; then
   mkdir build
 fi

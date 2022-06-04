@@ -1,0 +1,6 @@
+[submodule "wgslgenerator"]
+	path = wgslgenerator
+	url = https://github.com/hanawatson/wgslgenerator
+[submodule "wgslsmith"]
+	path = wgslsmith
+	url = https://github.com/wgslsmith/wgslsmith

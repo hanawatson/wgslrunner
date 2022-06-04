@@ -19,45 +19,45 @@ if [ "${WGSLGENERATOR_PATH}" ]; then
 else
   WGSLGENERATOR_PATH="wgslgenerator"
 fi
-if [ "${DAWN_SRC_DIR}" ]; then
-  if [ ! -d "${DAWN_SRC_DIR}" ]; then
-    echo "Error: env path to dawn DAWN_SRC_DIR is not a valid directory."
+if [ "${WGSLSMITH_PATH}" ]; then
+  if [ ! -d "${WGSLSMITH_PATH}" ]; then
+    echo "Error: env path to wgslsmith WGSLSMITH_PATH is not a valid directory."
     exit 1
   fi
 else
-  DAWN_SRC_DIR="dawn-build/dawn"
+  WGSLSMITH_PATH="wgslsmith"
 fi
-if [ "${WGSLSMITH_HARNESS_PATH}" ]; then
-  if [ ! -d "${WGSLSMITH_HARNESS_PATH}" ]; then
-    echo "Error: env path to harness-containing wgslsmith WGSLSMITH_HARNESS_PATH is not a valid directory."
+if [ "${DAWN_PATH}" ]; then
+  if [ ! -d "${DAWN_PATH}" ]; then
+    echo "Error: env path to Dawn DAWN_PATH is not a valid directory."
     exit 1
   fi
 else
-  WGSLSMITH_HARNESS_PATH="wgslsmith"
+  DAWN_PATH="${WGSLSMITH_PATH}/external/dawn"
 fi
-if [ "${TINT_DIR}" ]; then
-  if [ ! -d "${TINT_DIR}" ]; then
-    echo "Error: env path to Tint TINT_DIR is not a valid directory."
+if [ "${TINT_PATH}" ]; then
+  if [ ! -d "${TINT_PATH}" ]; then
+    echo "Error: env path to Tint TINT_PATH is not a valid directory."
     exit 1
   fi
 else
-  TINT_DIR="external_tools/tint"
+  TINT_PATH="external_tools/tint"
 fi
-if [ "${SPIRV_VAL_DIR}" ]; then
-  if [ ! -d "${SPIRV_VAL_DIR}" ]; then
-    echo "Error: env path to spirv-val SPIRV_VAL_DIR is not a valid directory."
+if [ "${SPIRV_VAL_PATH}" ]; then
+  if [ ! -d "${SPIRV_VAL_PATH}" ]; then
+    echo "Error: env path to spirv-val SPIRV_VAL_PATH is not a valid directory."
     exit 1
   fi
 else
-  SPIRV_VAL_DIR="${DAWN_SRC_DIR}/third_party/vulkan-deps/spirv-tools/src/build/tools"
+  SPIRV_VAL_PATH="${DAWN_PATH}/third_party/vulkan-deps/spirv-tools/src/build/tools"
 fi
-if [ "${GLSLANG_DIR}" ]; then
-  if [ ! -d "${GLSLANG_DIR}" ]; then
-    echo "Error: env path to glslang GLSLANG_DIR is not a valid directory."
+if [ "${GLSLANG_PATH}" ]; then
+  if [ ! -d "${GLSLANG_PATH}" ]; then
+    echo "Error: env path to glslang GLSLANG_PATH is not a valid directory."
     exit 1
   fi
 else
-  GLSLANG_DIR="${DAWN_SRC_DIR}/third_party/vulkan-deps/glslang/src/build/install/bin"
+  GLSLANG_PATH="${DAWN_PATH}/third_party/vulkan-deps/glslang/src/build/install/bin"
 fi
 
 while [ $# -gt 0 ]; do
@@ -167,17 +167,12 @@ elif [ ! "${INPUT_SHADER_FILE}" ] && [ "${INPUT_BINDINGS_FILE}" ]; then
   exit 1
 fi
 
-WGSLSMITH_HARNESS_RELEASE_PATH="${WGSLSMITH_HARNESS_PATH}/harness/target/release"
-if [ ! -d "${WGSLSMITH_HARNESS_RELEASE_PATH}" ]; then
-  echo "Error: could not find harness under provided wgslsmith harness path. Has the harness been built?"
-  exit 1
-fi
-WGSLSMITH_HARNESS_NAGA_PATH="${WGSLSMITH_HARNESS_PATH}/harness/external/naga"
-if [ ! -d "${WGSLSMITH_HARNESS_NAGA_PATH}" ]; then
-  echo "Error: could not find naga under provided wgslsmith harness path. Has the harness been built?"
+WGSLSMITH_HARNESS_PATH="${WGSLSMITH_PATH}/harness/target/release"
+if [ ! -d "${WGSLSMITH_HARNESS_PATH}" ]; then
+  echo "Error: could not find harness under wgslsmith path. Has the harness been built?"
   exit 1
 fi
 
-./gradlew run --args="${WGSLGENERATOR_PATH} ${WGSLSMITH_HARNESS_PATH} ${TINT_DIR} ${SPIRV_VAL_DIR} ${GLSLANG_DIR} \
+./gradlew run --args="${WGSLGENERATOR_PATH} ${WGSLSMITH_PATH} ${TINT_PATH} ${SPIRV_VAL_PATH} ${GLSLANG_PATH} \
 ${LOG_ON_ERROR} ${LOG_ON_OK} ${PRINT_ERROR_DETAIL} ${TERMINATE_AFTER_ERROR} ${USE_GEN_JAR} \
 shad:${INPUT_SHADER_FILE} bind:${INPUT_BINDINGS_FILE} conf:${INPUT_CONFIG_FILE}" -quiet
