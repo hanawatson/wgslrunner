@@ -56,7 +56,7 @@ fun main(args: Array<String>) {
         val genCommand = arrayListOf("./wgslgen.sh")
         if (inputConfig != null) genCommand.addAll(listOf("-c", inputConfig.absolutePath))
         if (useGenJar) genCommand.add("--use-jar")
-        
+
         val genProcess = ProcessBuilder(genCommand).directory(generatorDir).start()
         val genShader = genProcess.inputStream.reader(Charset.defaultCharset()).use { it.readText() }
         val genShaderError = genProcess.errorStream.reader(Charset.defaultCharset()).use { it.readText() }
@@ -161,21 +161,7 @@ fun main(args: Array<String>) {
         processesToRun.add(ShaderProcess("naga", nagaDir, inputShader = tempNagaShader.path))
         for (lang in nagaInputOutputLangs) {
             if (lang == "glsl") {
-                for (profile in glslInputOutputProfiles) {
-                    processesToRun.add(
-                        ShaderProcess(
-                            "naga", nagaDir, inputShader = tempNagaShader.path, outputLang = lang, glslProfile = profile
-                        )
-                    )
-                    processesToRun.add(ShaderProcess("naga", nagaDir, outputLang = lang, glslProfile = profile))
-                    val inputGLSL = "$nagaDir/${tempOutputs[lang]}"
-                    processesToRun.add(
-                        ShaderProcess(
-                            "naga", glslangDir, outputLang = lang, inputGLSL = inputGLSL, glslProfile = profile
-                        )
-                    )
-                }
-                for (profile in glslOutputProfiles) {
+                for (profile in (glslInputOutputProfiles + glslOutputProfiles)) {
                     processesToRun.add(
                         ShaderProcess(
                             "naga", nagaDir, inputShader = tempNagaShader.path, outputLang = lang, glslProfile = profile
@@ -198,7 +184,6 @@ fun main(args: Array<String>) {
             if (lang == "spirv") {
                 val inputSpirv = "$nagaDir/${tempOutputs[lang]}"
                 processesToRun.add(ShaderProcess("naga", spirvValDir, outputLang = lang, inputSpirv = inputSpirv))
-            } else if (lang == "glsl" || lang == "glsl-comp") {
             }
         }
         for (lang in nagaOutputLangs) {
