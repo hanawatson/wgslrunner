@@ -11,34 +11,13 @@ respective WGSL compilers [Tint](https://dawn.googlesource.com/tint) and [naga](
 
 ## Prerequisites
 
-wgslrunner and wgslgenerator can be cloned using:
+wgslrunner can be cloned using:
 
 ```
-$ git clone https://github.com/hanawatson/wgslrunner
-$ cd wgslsmith
-$ git clone https://github.com/hanawatson/wgslgenerator
+$ git clone --recurse-submodules https://github.com/hanawatson/wgslrunner wgslrunner
 ```
 
-hasali19's wgslsmith can be obtained by following the directions in the Harness section
-of its [documentation](https://wgslsmith.github.io/harness/building.html). These instructions
-should be followed instead of those immediately on its main GitHub page. Additionally, the
-recommendations made during the instructions should be treated as mandatory, including the
-usage of Ninja and the [dawn-build](https://github.com/wgslsmith/dawn-build) script.
-
-wgslgenerator, wgslsmith and dawn-build should be located in the top level of the wgslrunner directory.
-If any repository has already been cloned somewhere else, the `$WGSLGENERATOR_PATH`,
-`$WGSLSMITH_HARNESS_PATH` and `$DAWN_BUILD_SRC` (pointing to the dawn submodule within dawn-build) environment variables
-should be set accordingly. If these variables are empty or unset, the
-default locations will be assumed.
-
-In addition, wgslrunner makes use of the Tint compiler, spirv-val (a tool included in the
-[SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools) project)
-and [glslang](https://github.com/KhronosGroup/glslang) as standalone executables.
-These can be downloaded and built from source manually, in which case the `$TINT_PATH`, `$SPIRV_VAL_PATH` and
-`$GLSLANG_PATH` environment variables should be set, or can be assembled from existing files in the Dawn source
-code by using the `build_external_tools.sh` script included in wgslrunner. Use of this script is recommended to save
-space on the
-user's machine, as Tint in particular is a large repository.
+wgslrunner makes use of several tools and submodules. These will be cloned with the `recurse-submodules` flag in the above command. The various tools can then be built by running the `build_external_tools.sh` script included in wgslrunner. If any tool or repository is already located in a different directory on a user's machine, they can indicate this by setting the relevant environment variables (see the Enviroment variables section below). Use of the script is recommended to save space on the user's machine, rather than re-download large projects like Tint.
 
 ## Usage instructions
 
@@ -57,20 +36,22 @@ wgslrunner can be used by running its associated shell script, `wgslrun.sh`. Sev
 
 Note: both `input-shader` and `input-bindings` must be provided, or neither.
 
-The following environment variables are also used by wgslrunner, and should be set if different.
+## Environment variables
 
-| Variable | Default path (relative to wgslrunner directory) |
-| -------- | ------------- |
-| `$WGSLGENERATOR_PATH` | `wgslgenerator` |
-| `$DAWN_SRC_DIR` | `dawn-build/dawn` |
-| `$WGSLSMITH_HARNESS_PATH` | `wgslsmith` |
-| `$TINT_DIR` | `external_tools/tint` |
-| `$SPIRV_VAL_DIR` | `$DAWN_SRC_DIR/third_party/vulkan-deps/spirv-tools/src/build/tools` |
-|`$GLSLANG_DIR` | `$DAWN_SRC_DIR/third_party/vulkan-deps/glslang/src/build/install/bin` |
+The following environment variables are used by wgslrunner to locate various external tools, and should be set if different.
+
+| Variable | Tool | Default path (relative to wgslrunner directory) |
+| -------- | ---- | ----------------------------------------------- |
+| `$WGSLGENERATOR_PATH` | [wgslgenerator](https://github.com/hanawatson/wgslgenerator) | `wgslgenerator` |
+| `$WGSLSMITH_PATH` | [wgslsmith](https://github.com/wgslsmith/wgslsmith) | `wgslsmith` |
+| `$DAWN_PATH` | [Dawn](https://dawn.googlesource.com/dawn) | `$WGSLSMITH_PATH/external/dawn` |
+| `$TINT_PATH` | [Tint](https://dawn.googlesource.com/tint) | `external_tools/tint` |
+| `$SPIRV_VAL_PATH` | [SPIRV-Tools](https://github.com/KhronosGroup/SPIRV-Tools) | `$DAWN_PATH/third_party/vulkan-deps/spirv-tools/src/build/tools` |
+|`$GLSLANG_PATH` | [glslang](https://github.com/KhronosGroup/glslang) | `$DAWN_PATH/third_party/vulkan-deps/glslang/src/build/install/bin` |
 
 ## Requirements
 
 - JDK with Java version >= 1.8
 - Bash
-- Make (for external tool building script)
-- Child requirements (found on Git pages for wgslsmith, dawn-build etc.)
+- Make
+- Child requirements (found within linked repositories of external tools listed above)
