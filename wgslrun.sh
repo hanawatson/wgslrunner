@@ -77,7 +77,7 @@ while [ $# -gt 0 ]; do
     USAGE: ./wgslrun.sh [OPTIONS]
 
     OPTIONS:
-        -h, --help
+        -h, --help                                              Print help message
         -s, --input-shader <INPUT_SHADER>                       Path of the shader that should be used during tests
                                                                 [default: none - random shader generated internally]
         -b, --input-bindings <INPUT_BINDINGS>                   Path of the bindings that should be passed to
