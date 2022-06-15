@@ -72,6 +72,33 @@ fi
 
 while [ $# -gt 0 ]; do
   case "${1}" in
+    -h|--help)
+    echo "
+    USAGE: ./wgslrun.sh [OPTIONS]
+
+    OPTIONS:
+        -h, --help
+        -s, --input-shader <INPUT_SHADER>                       Path of the shader that should be used during tests
+                                                                [default: none - random shader generated internally]
+        -b, --input-bindings <INPUT_BINDINGS>                   Path of the bindings that should be passed to
+                                                                internal harness [default: none - bindings generated
+                                                                to match shader]
+        -c, --input-config <INPUT_CONFIG>                       Path of the config file that should be passed to
+                                                                internal generator [default: none - generator uses
+                                                                own default config]
+        -j, --use-generator-jar                                 Use the standalone wgslgenerator jar, which must be
+                                                                located in the top-level wgslrunner directory [default:
+                                                                disabled]
+        -(e/E), --(enable/disable)-log-on-error                 Enable/disable output logging if any test fails
+                                                                [default: enabled]
+        -(o/O), --(enable/disable)-log-on-ok                    Enable/disable output logging if all tests pass
+                                                                [default: disabled]
+        -(p/P), --(enable/disable)-print-error-detail           Enable/disable printing error output to the console if
+                                                                any tests fail [default: disabled]
+        -(t/T), --(enable/disable)-terminate-after-error        Enable/disable termination if any test fails, rather
+                                                                than continuing with the rest [default: enabled]"
+    exit 0
+    ;;
     -s|--input-shader)
     if [ ! "${2}" ]; then
       echo "Error: no input shader file was provided."
