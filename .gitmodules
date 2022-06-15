@@ -4,3 +4,6 @@
 [submodule "wgslsmith"]
 	path = wgslsmith
 	url = https://github.com/wgslsmith/wgslsmith
+[submodule "dawn-build"]
+	path = dawn-build
+	url = https://github.com/wgslsmith/dawn-build

@@ -11,39 +11,48 @@ PRINT_ERROR_DETAIL=0
 TERMINATE_AFTER_ERROR=1
 USE_GEN_JAR=0
 
+WGSLRUNNER_PATH="$(dirname "$(realpath "${0}")")"
+cd "${WGSLRUNNER_PATH}"
+
+# allow for non-default locations
 if [ "${WGSLGENERATOR_PATH}" ]; then
+  WGSLGENERATOR_PATH="$(realpath "${WGSLGENERATOR_PATH}")"
   if [ ! -d "${WGSLGENERATOR_PATH}" ]; then
     echo "Error: env path to wgslgenerator WGSLGENERATOR_PATH is not a valid directory."
     exit 1
   fi
 else
-  WGSLGENERATOR_PATH="wgslgenerator"
+  WGSLGENERATOR_PATH="${WGSLRUNNER_PATH}/wgslgenerator"
 fi
 if [ "${WGSLSMITH_PATH}" ]; then
+  WGSLSMITH_PATH="$(realpath "${WGSLSMITH_PATH}")"
   if [ ! -d "${WGSLSMITH_PATH}" ]; then
     echo "Error: env path to wgslsmith WGSLSMITH_PATH is not a valid directory."
     exit 1
   fi
 else
-  WGSLSMITH_PATH="wgslsmith"
+  WGSLSMITH_PATH="${WGSLRUNNER_PATH}/wgslsmith"
 fi
 if [ "${DAWN_PATH}" ]; then
+  DAWN_PATH="$(realpath "${DAWN_PATH}")"
   if [ ! -d "${DAWN_PATH}" ]; then
     echo "Error: env path to Dawn DAWN_PATH is not a valid directory."
     exit 1
   fi
 else
-  DAWN_PATH="${WGSLSMITH_PATH}/external/dawn"
+  DAWN_PATH="${WGSLRUNNER_PATH}/dawn-build/dawn"
 fi
 if [ "${TINT_PATH}" ]; then
+  TINT_PATH="$(realpath "${TINT_PATH}")"
   if [ ! -d "${TINT_PATH}" ]; then
     echo "Error: env path to Tint TINT_PATH is not a valid directory."
     exit 1
   fi
 else
-  TINT_PATH="external_tools/tint"
+  TINT_PATH="${WGSLRUNNER_PATH}/external_tools/tint"
 fi
 if [ "${SPIRV_VAL_PATH}" ]; then
+  SPIRV_VAL_PATH="$(realpath "${SPIRV_VAL_PATH}")"
   if [ ! -d "${SPIRV_VAL_PATH}" ]; then
     echo "Error: env path to spirv-val SPIRV_VAL_PATH is not a valid directory."
     exit 1
@@ -52,6 +61,7 @@ else
   SPIRV_VAL_PATH="${DAWN_PATH}/third_party/vulkan-deps/spirv-tools/src/build/tools"
 fi
 if [ "${GLSLANG_PATH}" ]; then
+  GLSLANG_PATH="$(realpath "${GLSLANG_PATH}")"
   if [ ! -d "${GLSLANG_PATH}" ]; then
     echo "Error: env path to glslang GLSLANG_PATH is not a valid directory."
     exit 1
